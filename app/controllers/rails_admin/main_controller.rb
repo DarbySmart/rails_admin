@@ -85,12 +85,6 @@ module RailsAdmin
       end
     end
 
-    def satisfy_strong_params!
-      if @abstract_model.model.ancestors.collect(&:to_s).include?('ActiveModel::ForbiddenAttributesProtection')
-        params[@abstract_model.param_key].try :permit!
-      end
-    end
-
     def sanitize_params_for!(action, model_config = @model_config, _params = params[@abstract_model.param_key])
       return unless _params.present?
       fields = model_config.send(action).with(controller: self, view: view_context, object: @object).visible_fields
