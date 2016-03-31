@@ -99,6 +99,7 @@ module RailsAdmin
       end.flatten.uniq.collect(&:to_s) << 'id' << '_destroy'
       fields.each { |f| f.parse_input(_params) }
       _params.slice!(*allowed_methods)
+      _params.permit! if _params.respond_to?(:permit!)
       fields.select(&:nested_form).each do |association|
         children_params = association.multiple? ? _params[association.method_name].try(:values) : [_params[association.method_name]].compact
         (children_params || []).each do |children_param|
